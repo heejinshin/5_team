@@ -59,24 +59,38 @@
       background-color: whitesmoke;
       z-index: 1;
       justify-content:center;
+      display: flex;
+      align-items: center;
 
     }
 
     .row{
       display: flex;
+      width: 330px;
     }
     .break {
     flex-basis: 100%;
     height: 0;
     }
     
+    .col{
+      justify-content:center;
+      display: flex;
+      align-items: center;
+      margin: 10px;
+
+    }
+    .btn-check{
+      width: 101.98px;
+      height: 72px;
+    }
     ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  z-index: 1
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    z-index: 1
 }
 
 li {
@@ -112,8 +126,9 @@ li a:hover:not(.active) {
   <div id="map"></div>
   <div id="board">
     <div class="name">나는 사장</div>
-    <div class="box"><div class="row">
-      <div class="col ">
+    <div class="box">
+      <div class="row">
+      <div class="col">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
           <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
           <label class="btn btn-outline-primary" for="btnradio1">점포 위치</label>
@@ -123,17 +138,54 @@ li a:hover:not(.active) {
           <label class="btn btn-outline-primary" for="btnradio3">분석 영역</label>
         </div>
       </div>
-    </div></div>
-  <div class="row">
-    <div class="col mt-5">
-      <div id="searchContainer">
+    </div>
+  </div>
+  
+    <div class="col">
+      <div id="searchContainer" style="display: none;">
         <input type="text" id="searchInput">
         <button id="searchButton">검색</button>
       </div>
     </div>
+
+   
+    
+<div class="row">
+  <div class="col">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group"id="btnGroup1"
+    style="display: none;">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="">전체</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">외식업</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">소매업</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">서비스업</label>
+    </div>
   </div>
 </div>
 
+<div class="row">
+  <div class="col">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup"
+      style="display: none;">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="">전체</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">외식업</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">소매업</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">서비스업</label>
+    </div>
+  </div>
+</div>
+<div class="col">
+  <input type="checkbox" class="btn-check" id="btnGroup4" autocomplete="off">
+  <label class="btn btn-outline-primary" for="btncheck1">적용
+  </label>
+</div>
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cbb4e0aa49904153effd8af45c4263c2"></script>
   <script>
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
@@ -148,6 +200,36 @@ li a:hover:not(.active) {
     window.addEventListener("resize", function () {
       map.relayout();
     });
+
+    //버튼
+    let btnradio1 = document.getElementById('btnradio1');
+      let btnradio2 = document.getElementById('btnradio2');
+      let btnradio3 = document.getElementById('btnradio3');
+      let searchContainer = document.getElementById('searchContainer');
+      let btnGroup1 = document.getElementById('btnGroup1');
+      let btnGroup2 = document.getElementById('btnGroup2');
+      let dataTable = document.getElementById('dataTable');
+
+      btnradio1.addEventListener('click', function () {
+        searchContainer.style.display = 'block';
+        btnGroup1.style.display = 'none';
+        btnGroup2.style.display = 'none';
+        dataTable.style.display = 'none';
+      });
+
+      btnradio2.addEventListener('click', function () {
+        searchContainer.style.display = 'none';
+        btnGroup1.style.display = 'block';
+        btnGroup2.style.display = 'block';
+        dataTable.style.display = 'none';
+      });
+
+      btnradio3.addEventListener('click', function () {
+        searchContainer.style.display = 'none';
+        btnGroup1.style.display = 'none';
+        btnGroup2.style.display = 'none';
+        dataTable.style.display = 'table';
+      });
   </script>
 
  
