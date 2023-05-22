@@ -7,7 +7,7 @@ from . import views
 app_name = 'service'
 
 urlpatterns = [
-    path("index", views.index),
-    path("map", views.show_map),
-    
+    path("index/", views.index),
+    path("map/", views.show_map),
+    path("write/", views.write),
 ]
