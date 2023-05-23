@@ -11,7 +11,7 @@
         {% csrf_token %}
         {{form.as_input}}
         <input type="text" id="searchInput">
-        <button id="searchButton">검색</button>
+        <button id="searchButton" >검색</button>
     </form>
 </body>
 <script>
@@ -24,7 +24,13 @@
         frm.method = "post";
         frm.submit(); 
         // 여기서 
- });
+ });  $(document).ready( () => {
+    $("#searchButton").click( () => {
+      $("#formInput").prop("action", "/board/save/");
+      $("#formInput").prop("method", "post");
+      $("#formInput").submit();
+    });
+  })
     
 </script>
 </html>
