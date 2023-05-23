@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form name="formInput">    
+        {% csrf_token %}
+        {{form.as_input}}
+        <input type="text" id="searchInput">
+        <button id="searchButton">검색</button>
+    </form>
+</body>
+<script>
+    // input- form 연결 작업 
+    let inputData = document.getElementById("searchInput");
+    let submitBtn = document.getElexzåById("searchButton");
+     submitBtn.addEventListener("click", () =>{
+        let frm = document.formInput;
+        frm.action = "/service/save/";
+        frm.method = "post";
+        frm.submit(); 
+        // 여기서 
+ });
+    
+</script>
+</html>
