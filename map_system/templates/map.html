@@ -130,7 +130,7 @@ li a:hover:not(.active) {
       <div class="row">
       <div class="col">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
           <label class="btn btn-outline-primary" for="btnradio1">점포 위치</label>
           <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
           <label class="btn btn-outline-primary" for="btnradio2">업종 선택</label>
@@ -142,18 +142,26 @@ li a:hover:not(.active) {
   </div>
   
     <div class="col">
-      <div id="searchContainer" style="display: none;">
+      <div id="searchContainer" style="display: none">
         <input type="text" id="searchInput">
         <button id="searchButton">검색</button>
       </div>
     </div>
-
-   
     
+    <div class="col">
+    <div id="btnradio111"  style="display: none">
+    <input type="radio" name="marker">
+    <label for="btnradio111">
+      지도에 마커 표시하기
+    </label>
+    </div>
+    </div>
+
+
 <div class="row">
   <div class="col">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group"id="btnGroup1"
-    style="display: none;">
+    style="display: none">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="">전체</label>
       <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
@@ -166,10 +174,10 @@ li a:hover:not(.active) {
   </div>
 </div>
 
-<div class="row">
+<!-- <div class="row">
   <div class="col">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup"
-      style="display: none;">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup2"
+      style="display: none">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="">전체</label>
       <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
@@ -180,12 +188,14 @@ li a:hover:not(.active) {
       <label class="btn btn-outline-primary" for="">서비스업</label>
     </div>
   </div>
-</div>
-<div class="col">
-  <input type="checkbox" class="btn-check" id="btnGroup4" autocomplete="off">
+</div> -->
+
+<div class="col" id="btnGroup4">
+  <input type="checkbox" class="btn-check"  autocomplete="off">
   <label class="btn btn-outline-primary" for="btncheck1">적용
   </label>
 </div>
+
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cbb4e0aa49904153effd8af45c4263c2"></script>
   <script>
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
@@ -197,42 +207,65 @@ li a:hover:not(.active) {
 
     // 지도를 생성한다
     var map = new kakao.maps.Map(mapContainer, mapOption);
-    window.addEventListener("resize", function () {
-      map.relayout();
-    });
+    // window.addEventListener("resize", function () {
+    //   map.relayout();
+    // });
+
+  kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+    if (document.getElementById('btnradio1').checked) {
+      var latlng = mouseEvent.latLng;
+
+      var marker = new kakao.maps.Marker({
+        position: latlng
+      });
+
+      marker.setMap(map);
+
+      var message = 'Marker created at: ' + latlng.getLat() + ', ' + latlng.getLng();
+      console.log(message);
+      alert(message);
+    }
+  });
+
 
     //버튼
-    let btnradio1 = document.getElementById('btnradio1');
+      let btnradio1 = document.getElementById('btnradio1');
       let btnradio2 = document.getElementById('btnradio2');
       let btnradio3 = document.getElementById('btnradio3');
       let searchContainer = document.getElementById('searchContainer');
       let btnGroup1 = document.getElementById('btnGroup1');
       let btnGroup2 = document.getElementById('btnGroup2');
-      let dataTable = document.getElementById('dataTable');
+      let btnradio111 = document.getElementById('btnradio111');
+      // let dataTable = document.getElementById('dataTable');
 
       btnradio1.addEventListener('click', function () {
         searchContainer.style.display = 'block';
+        btnradio111.style.display='block';
         btnGroup1.style.display = 'none';
         btnGroup2.style.display = 'none';
-        dataTable.style.display = 'none';
+        // dataTable.style.display = 'none';
       });
 
       btnradio2.addEventListener('click', function () {
         searchContainer.style.display = 'none';
+        btnradio111.style.display = 'none';
         btnGroup1.style.display = 'block';
         btnGroup2.style.display = 'block';
-        dataTable.style.display = 'none';
+        // dataTable.style.display = 'none';
       });
 
       btnradio3.addEventListener('click', function () {
         searchContainer.style.display = 'none';
+        btnradio111.style.display = 'none';
         btnGroup1.style.display = 'none';
         btnGroup2.style.display = 'none';
-        dataTable.style.display = 'table';
+        // dataTable.style.display = 'table';
       });
+
+      
   </script>
 
- 
+
 </body>
 
 </html>
