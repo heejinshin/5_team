@@ -19,7 +19,8 @@ class MyForm(forms.ModelForm):
             "address_dong": "법정동명",
             "address_road": "도로명",
             "longitude": "경도",
-            "latitude": "위도"
+            "latitude": "위도",
+            "wdate":"wdate"
         }
 
 from service.models import UserInputModel
