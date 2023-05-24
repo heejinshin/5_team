@@ -24,7 +24,7 @@ from service.forms import MyForm
 def save(request):
     form = MyModel(request.POST)  # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
     if form.is_valid():
-        result = form.save(commit=True)  # 디비에 알아서 저장된다. Insert쿼리 자동생성ㅇ
+        result = form.save(commit=True)  # 디비에 알아서 저장된다. Insert쿼리 자동생성
     # return redirect("service:list")
     return result
     
@@ -81,3 +81,10 @@ def generate_report(request):
     # 조회된 상권 정보를 리포트로 보여줍니다.
     context = {'model_result': model_result}
     return render(request, "service/report.html", context)
+
+# 로그인 버튼 클릭 시 이동하도록 # home와 login
+def home(request) :
+    return render(request, "home.html")
+
+def login(request) :
+    return render(request, "login.html")
