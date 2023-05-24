@@ -22,4 +22,14 @@ class MyForm(forms.ModelForm):
             "latitude": "위도"
         }
 
+from service.models import UserInputModel
 
+class UserInputForm(forms.ModelForm):
+    class Meta:
+        model = UserInputModel
+        fields = ["store_location", "store_select", "store_area"]
+        labels = {
+            "store_location": "점포위치",
+            "store_select": "업종선택",
+            "store_area": "분석영역"
+        }

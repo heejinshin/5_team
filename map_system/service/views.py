@@ -22,11 +22,11 @@ from service.forms import MyForm
 
 # html에서 받아온 사용자 값을 모델에 저장하기 (우리의 데이터)
 def save(request):
-    form = MyModel(request.POST)  # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
-    if form.is_valid():
-        result = form.save(commit=True)  # 디비에 알아서 저장된다. Insert쿼리 자동생성ㅇ
-    # return redirect("service:list")
-    return result
+    data = request.POST.get('searchInput')
+     # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
+    # if data.is_valid():
+        # result = form.sav/e(commit=True)  # 디비에 알아서 저장된다. Insert쿼리 자동생성ㅇ
+    return HttpResponse(data)
     
 
 # csv파일을 불러와서 모델에 저장하기 (보여줄 데이터)
@@ -81,3 +81,19 @@ def generate_report(request):
     # 조회된 상권 정보를 리포트로 보여줍니다.
     context = {'model_result': model_result}
     return render(request, "service/report.html", context)
+
+
+from django.shortcuts import render, redirect
+from .forms import UserInputForm
+
+
+# 사용자 입력값 받기 
+def user_input_view(request):   
+    if request.method == 'POST':
+        form = UserInputForm(request.POST)
+        if form.is_valid():
+            form.save()  # 입력 값을 데이터베이스에 저장
+            return redirect('success')  # 저장 후 리다이렉션할 URL
+    else:
+        form = UserInputForm()
+    return render(request, 'index.html', {'form': form})

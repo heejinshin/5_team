@@ -8,3 +8,14 @@ class MyModel(models.Model):
     address_road = models.CharField(max_length=100)
     longitude = models.FloatField()
     latitude = models.FloatField()
+
+
+
+class UserInputModel(models.Model):
+    # 점포위치
+    store_location = models.CharField(max_length=100)
+    # 업종선택
+    store_select = models.CharField(max_length=100)
+    # 분석영역
+    store_area = models.IntegerField(max_length=100)
+
