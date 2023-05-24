@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 
+<!-- id 기준: btnradio'n' < btn radio'nn' 단 n은 숫자 -->
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,6 +41,9 @@
       /* justify-content:space-evenly; */
       /* flex-wrap: wrap; */
     }
+    #btnGroup1 {
+      width: 330px;
+    }
     #board > .name {
       position: static;
       width: 330px;
@@ -65,7 +70,7 @@
     }
 
     .row{
-      display: flex;
+      /* display: flex; */
       width: 330px;
     }
     .break {
@@ -75,7 +80,7 @@
     
     .col{
       justify-content:center;
-      display: flex;
+      /* display: flex; */
       align-items: center;
       margin: 10px;
 
@@ -149,9 +154,9 @@ li a:hover:not(.active) {
     </div>
     
     <div class="col">
-    <div id="btnradio111"  style="display: none">
+    <div id="btnradio011"  style="display: none">
     <input type="radio" name="marker">
-    <label for="btnradio111">
+    <label for="btnradio011">
       지도에 마커 표시하기
     </label>
     </div>
@@ -160,36 +165,53 @@ li a:hover:not(.active) {
 
 <div class="row">
   <div class="col">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group"id="btnGroup1"
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup1"
     style="display: none">
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio21" autocomplete="off">
       <label class="btn btn-outline-primary" for="">전체</label>
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio22" autocomplete="off">
       <label class="btn btn-outline-primary" for="">외식업</label>
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio23" autocomplete="off">
       <label class="btn btn-outline-primary" for="">소매업</label>
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio24" autocomplete="off">
       <label class="btn btn-outline-primary" for="">서비스업</label>
     </div>
   </div>
 </div>
 
-<!-- <div class="row">
+<div class="row">
+  <div class="col">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup12"
+      style="display: none">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="">한식음식점</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">중식음식점</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">일식음식점</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">양식음식점</label>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
   <div class="col">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup2"
       style="display: none">
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
-      <label class="btn btn-outline-primary" for="">전체</label>
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-      <label class="btn btn-outline-primary" for="">외식업</label>
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
-      <label class="btn btn-outline-primary" for="">소매업</label>
-      <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
-      <label class="btn btn-outline-primary" for="">서비스업</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio31" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">300m</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio32" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">500m</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio33" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">1000m</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio34" autocomplete="off">
+      <label class="btn btn-outline-primary" for="">직접그리기</label>
     </div>
   </div>
-</div> -->
-
+</div>
 <div class="col" id="btnGroup4">
   <input type="checkbox" class="btn-check"  autocomplete="off">
   <label class="btn btn-outline-primary" for="btncheck1">적용
@@ -211,36 +233,83 @@ li a:hover:not(.active) {
     //   map.relayout();
     // });
 
+
+  //radio 버튼 클릭시 좌표 생성
+
+  var latLng1 
   kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
     if (document.getElementById('btnradio1').checked) {
-      var latlng = mouseEvent.latLng;
+      latLng1 = mouseEvent.latLng;
 
       var marker = new kakao.maps.Marker({
-        position: latlng
+        position: latLng1
       });
 
       marker.setMap(map);
 
-      var message = 'Marker created at: ' + latlng.getLat() + ', ' + latlng.getLng();
+      var message = 'Marker created at: ' + latLng1.getLat() + ', ' + latLng1.getLng();
       console.log(message);
       alert(message);
+      //latling: 튜플 좌표값
     }
   });
 
+
+  document.getElementById('btnradio3').addEventListener('change', function () {
+    if (this.checked) {
+      if (latLng1) {
+        var circle = new kakao.maps.Circle({
+          center: latLng1,
+          radius: 300,
+          strokeWeight: 5,
+          strokeColor: '#75B8FA',
+          strokeOpacity: 1,
+          strokeStyle: 'dashed',
+          fillColor: '#CFE7FF',
+          fillOpacity: 0.7
+        });
+
+        circle.setMap(map);
+      } else {
+        alert("Please create a marker first by clicking on the map.");
+      }}})
+    
+  
+
+
+    //   var messageCircle = 'circle created at: ' + latlng.getLat() + ', ' + latlng.getLng();
+    //   console.log(messageCircle);
+    //   alert(messageCircle);
+    // kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+    //   if (document.getElementById('btnradio3').checked) {
+
+        
+    //     //latling: 튜플 좌표값
+    //   }
+    // });
+  
+  //원 만들기
 
     //버튼
       let btnradio1 = document.getElementById('btnradio1');
       let btnradio2 = document.getElementById('btnradio2');
       let btnradio3 = document.getElementById('btnradio3');
+      let btnradio011 = document.getElementById('btnradio011');
+      let btnradio21 = document.getElementById('btnradio21');
+      let btnradio22 = document.getElementById('btnradio22');
+      let btnradio23 = document.getElementById('btnradio23');
+      let btnradio24 = document.getElementById('btnradio24');
+      let btnradio31 = document.getElementById('btnradio31');
       let searchContainer = document.getElementById('searchContainer');
       let btnGroup1 = document.getElementById('btnGroup1');
       let btnGroup2 = document.getElementById('btnGroup2');
-      let btnradio111 = document.getElementById('btnradio111');
+
+      
       // let dataTable = document.getElementById('dataTable');
 
       btnradio1.addEventListener('click', function () {
         searchContainer.style.display = 'block';
-        btnradio111.style.display='block';
+        btnradio011.style.display='block';
         btnGroup1.style.display = 'none';
         btnGroup2.style.display = 'none';
         // dataTable.style.display = 'none';
@@ -248,17 +317,20 @@ li a:hover:not(.active) {
 
       btnradio2.addEventListener('click', function () {
         searchContainer.style.display = 'none';
-        btnradio111.style.display = 'none';
+        btnradio011.style.display = 'none';
         btnGroup1.style.display = 'block';
-        btnGroup2.style.display = 'block';
+        // btnradio22.addEventListener('click', function () {
+        // btnGroup12.style.display = 'block';
+        // })
+        btnGroup2.style.display = 'none';
         // dataTable.style.display = 'none';
       });
 
       btnradio3.addEventListener('click', function () {
         searchContainer.style.display = 'none';
-        btnradio111.style.display = 'none';
+        btnradio011.style.display = 'none';
         btnGroup1.style.display = 'none';
-        btnGroup2.style.display = 'none';
+        btnGroup2.style.display = 'block';
         // dataTable.style.display = 'table';
       });
 
