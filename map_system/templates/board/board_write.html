@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        {% csrf_token %}
+
+      <div class="container mt-5">
+
+              <div class="input-group mb-3 mt-3">
+                <label for="title" class="form-label">제목:</label> 
+                <input type="text" class="form-control" id="title" placeholder="Enter
+                title" name="title" required>
+              </div>
+              <div class="input-group mb-3 mt-3">
+                <label for="writer" class="form-label">작성자:</label> 
+                <input type="text" class="form-control" id="writer" placeholder="Enter
+                title" name="writer" required>
+              </div>
+              <div class="input-group mb-3 mt-3">
+                <label for="contents" class="form-label">내용:</label> 
+                <textarea class="form-control" rows="5" id="contents" name="contents"></textarea>
+              </div>
+        </div>
+
+        <div class="container mt-5" style="text-align: right;">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" id="btnWrite">글쓰기</button>
+            </div>
+        </div>
+        </body>
+        </html>
+      </div>
+
+
+<script>
+  function goPage(pg)
+  {
+    // 자바스크립트 페이지 이동 -get방식으로 간단히 이동할 때
+    location.href="/board/list2/"+pg;
+
+    // 이게 아닐 경우에는 form태그 참조를 가져와서 사용한다.
+  }
+
+  $(document).ready( () => {
+    $("#btnWrite").click( () => {
+      $("#myform").prop("action", "/board/save/");
+      $("#myform").prop("method", "post");
+      $("#myform").submit();
+    });
+  })
+</script>
+
+{%endblock%}

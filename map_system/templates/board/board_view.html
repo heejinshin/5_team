@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+      <div class="container mt-5">
+        <table class="table">
+            <colgroup>
+                <col width="13%"/>
+                <col width="20%"/>
+                <col width="13%"/>
+                <col width="20%"/>
+                <col width="13%"/>
+                <col width="20%"/>
+            </colgroup>
+
+            <tbody>
+              <tr>
+                <th>제목</th>
+                <td colspan="5">{{boardItem.title}}</td>
+              </tr>
+              <tr>
+                <th>작성자</th>
+                <td>{{boardItem.writer}}</td>
+                <th>작성일</th>
+                <td>{{boardItem.wdate}}</td>                
+                <th>조회수</th>
+                <td>{{boardItem.hit}}</td>
+              </tr>
+              <tr>
+                <th>내용</th>
+                <!-- textarea의 \n -> </br>로 바꿔주는 필터 -->
+                <!-- <td colspan="5">{{boardItem.contents|linewbreaks}}</td> -->
+                <td colspan="5">{{boardItem.contents}}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="container mt-5" style="text-align: right;">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" id="btnWrite">글쓰기</button>
+            </div>
+        </div>
+        </body>
+        </html>
+      </div>
+
+
+<script>
+  function goPage(pg)
+  {
+    // 자바스크립트 페이지 이동 -get방식으로 간단히 이동할 때
+    location.href="/board/list2/"+pg;
+
+    // 이게 아닐 경우에는 form태그 참조를 가져와서 사용한다.
+  }
+
+  $(document).ready( () => {
+    $("#btnWrite").click( () => {
+      $("#myform").prop("action", "/board/write");
+      $("#myform").prop("method", "post");
+      $("#myform").submit();
+    });
+  })
+</script>
+
+{%endblock%}
