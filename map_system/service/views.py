@@ -1,3 +1,6 @@
+from django.contrib.auth.forms import UserCreationForm
+# 추가함 17:11
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
@@ -15,7 +18,6 @@ def show_map(request):
 import csv
 from service.models import MyModel
 from service.forms import MyForm
-
 
 
 # from service.forms import MyForm
@@ -80,12 +82,8 @@ def generate_report(request):
 
     # 조회된 상권 정보를 리포트로 보여줍니다.
     context = {'model_result': model_result}
+
     return render(request, "service/report.html", context)
-
-
-from django.shortcuts import render, redirect
-from .forms import UserInputForm
-
 
 # 사용자 입력값 받기 
 def user_input_view(request):   
@@ -97,3 +95,46 @@ def user_input_view(request):
     else:
         form = UserInputForm()
     return render(request, 'index.html', {'form': form})
+
+############################## 추가
+
+def map(request):
+    return render(request, 'service/map.html')
+
+# signup에서 signup_view로 수정
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'service/signup.html', {'form': form})
+    # return render(request, 'service/signup.html')
+
+def login(request):
+    # if request.method == 'POST':
+    #     username = request.POST.get('username')
+    #     password = request.POST.get('password')
+
+    #     # 아이디와 비밀번호를 검증하는 로직을 작성합니다.
+    #     if username == 'admin' and password == 'password':
+    #         # 로그인 성공 시
+    #         return render(request, 'success.html')
+    #     else:
+    #         # 로그인 실패 시
+    #         error_message = "아이디와 비밀번호가 일치하지 않습니다."
+    #         return render(request, 'login.html', {'error_message': error_message})
+    return render(request, 'service/login.html')
+
+from django.contrib.auth.forms import UserCreationForm # 추가
+from .forms import UserInputForm
+
+from django.shortcuts import render,redirect
+
+def login(request) :
+    if request.method == "POST" :
+        pass
+    else :
+        return render(request, "service/login.html")

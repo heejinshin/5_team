@@ -155,7 +155,13 @@ li a:hover:not(.active) {
 <body>
 <ul>
   <li><a href="#home">이수시 상권분석서비스!</a></li>
-  <li style="float:right"><a class="active" href="#about">로그인</a></li>
+  <div>
+  <li style="float:right"><a class="active" href="{% url 'service:login' %}">로그인</a></li>
+  </div>
+  <div>
+  <li style="float:right"><a class="active" href="{% url 'service:signup' %}">회원가입</a></li>
+  </div>
+
 </ul>
   <div id="map"></div>
   <div id="board">
