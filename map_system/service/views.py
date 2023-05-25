@@ -49,19 +49,25 @@ def save_data_to_model(request):
     # return redirect(form_object)
 
 
+from django.http import HttpResponse
+
 def write(request):
     if request.method == "POST":
-        form = MyForm(request.POST)
+        form = UserInputForm(request.POST)
         if form.is_valid():
-            # 폼이 유효한 경우, 필요한 처리를 수행
-            # ...
-            return redirect("index")  # 처리가 완료된 후에는 다시 index로 이동
+            board = form.save(commit=False)
+            if request.POST.get("btnradio") == "외식업":
+                board.category = "외식업"
+            elif request.POST.get("btnradio") == "소매업":
+                board.category = "소매업"
+            board.save()
+
+            return HttpResponse("글이 성공적으로 저장되었습니다.")
     else:
-        form = MyForm()
+        form = UserInputForm()
 
-    context = {"form": MyForm(request.POST)}
-    return render(request, "service/index.html", context)
-
+    context = {"form": form}
+    return render(request, "board/board_write.html", context)
 
 def generate_report(request):
     # 특정 영역의 경도, 위도 범위를 설정합니다.
@@ -97,3 +103,45 @@ def user_input_view(request):
     else:
         form = UserInputForm()
     return render(request, 'index.html', {'form': form})
+
+
+from django.http import HttpResponse
+
+def write(request):
+    if request.method == "POST":
+        form = UserInputForm(request.POST)
+        if form.is_valid():
+            board = form.save(commit=False)
+            if request.POST.get("btnradio") == "외식업":
+                board.category = "외식업"
+            elif request.POST.get("btnradio") == "소매업":
+                board.category = "소매업"
+            board.save()
+
+            return HttpResponse("글이 성공적으로 저장되었습니다.")
+    else:
+        form = UserInputForm()
+
+    context = {"form": form}
+    return render(request, "board/board_write.html", context)
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from .models import CheckedValues
+
+@csrf_exempt
+def save_checked_values(request):
+    if request.method == "POST":
+        checked_values = request.POST.getlist("checkedValues[]")
+
+        # 선택된 checkbox의 카운트를 저장하는 로직
+        # 예를 들어, CheckedValues 모델에 저장한다고 가정하면:
+        for value in checked_values:
+            checked_value, created = CheckedValues.objects.get_or_create(value=value)
+            checked_value.count += 1
+            checked_value.save()
+
+        return JsonResponse({"message": "선택된 카운트가 저장되었습니다."})
+
+    return JsonResponse({"message": "잘못된 요청입니다."})

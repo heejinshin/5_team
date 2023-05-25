@@ -1,18 +1,22 @@
+
 from django.contrib import admin
 from django.urls import path
 
+from . import views 
 
-from . import views
-from board.views import BoardList, BoardDetail
-
-# namespace 생성
-
-# redirect(app_name: path의 name속성)
-app_name = "board"
+app_name="board"
 urlpatterns = [
-    path("list", BoardList.as_view(), name="list"),
-    path("detail/<int:pk>", BoardDetail.as_view()),
-    # board_detail.html
-    path("write/", views.write),
-    path("save/", views.save),
+    path("list/", views.list), #orm방식
+    path("list2/<int:pg>/", views.list2, name="list"), 
+    path("view/<int:id>/", views.views), 
+    path("write/", views.write, name="write"), 
+    path("save/", views.save, name="save"), 
+    path("modify/", views.modify),
+    # 사용자 인풋값 받기 
+    # path("userData",views.category_count, name="category_count")
 ]
+
+
+
+
+

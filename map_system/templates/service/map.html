@@ -156,6 +156,7 @@ li a:hover:not(.active) {
 <ul>
   <li><a href="#home">이수시 상권분석서비스!</a></li>
   <li style="float:right"><a class="active" href="#about">로그인</a></li>
+  <li style="float:right"><a class="active" href="{% url 'board:write' %}">게시판</a></li>
 </ul>
   <div id="map"></div>
   <div id="board">
@@ -225,7 +226,7 @@ li a:hover:not(.active) {
   <div class="col">
     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="btnGroup12" style="display: none;">
       <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-      <label class="btn btn-outline-primary btn-sm" for="btncheck4">일반교습학원</label>
+      <label class="btn btn-outline-primary btn-sm" for="btncheck4" name="">일반교습학원</label>
       <input type="checkbox" class="btn-check" id="btncheck5" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck5">외국어학원</label>
       <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off" width="">
@@ -263,7 +264,7 @@ li a:hover:not(.active) {
 </div>
 <div class="col" id="btnGroup4">
   <input type="checkbox" class="btn-check"  autocomplete="off" id="apply">
-  <label class="btn btn-outline-primary" for="apply">적용  
+  <label class="btn btn-outline-primary" for="apply"><a href="{% url 'board:write' %}">적용</a>  
   </label>
   <input type="radio" class="btn-check"  autocomplete="off" id="">
     <label class="btn btn-outline-primary" for="" id="analyze">분석</label>
@@ -471,11 +472,30 @@ li a:hover:not(.active) {
   });
         XBtn.addEventListener('click', () => {
           reportPage.style.display = 'none';
-  });         
-
+  });        
+  
+  // 점포 유형 선택시 해당 값 서버로 전달
+  $(document).ready(function() {
+  $("#apply").click(function() {
+    var checkedValues = [];
+    $(".btn-check:checked").each(function() {
+      checkedValues.push($(this).attr("id"));
+    });
+    $.ajax({
+      url: "/save_checked_values/",  
+      type: "POST",  
+      data: {
+        checkedValues: checkedValues
+      },
+      success: function(response) {
+        console.log("선택된 카운트가 성공적으로 저장되었습니다.");
+      },
+      error: function(xhr, errmsg, err) {
+        console.log("카운트 저장 중 오류가 발생했습니다.");
+      }
+    });
+  });
+});
   </script>
-
-
 </body>
-
 </html>

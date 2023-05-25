@@ -17,5 +17,5 @@ class UserInputModel(models.Model):
     # 업종선택
     store_select = models.CharField(max_length=100)
     # 분석영역
-    store_area = models.IntegerField(max_length=100)
+    store_area = models.IntegerField()
 
