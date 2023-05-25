@@ -13,6 +13,7 @@
   <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <script src="{% static 'js/jquery-3.7.0.min.js'%}"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
     html,
     body{
@@ -300,8 +301,7 @@ li a:hover:not(.active) {
       </nav>
   </div>
   <div id="section1" class="section">
-    Section 1
-    
+    <div id="summary"></div>
   </div>
   <div id="section2" class="section">Section 2</div>
   <div id="section3" class="section">Section 3</div>
@@ -378,17 +378,58 @@ li a:hover:not(.active) {
           type: "GET",
           dataType:"json",
           data: { La: latLng1.La, Ma: latLng1.Ma }, 
-          success: function(p) {
-          console.log(p);
-          let resultTop3=p
-          },
+          success: function(resultBig3) {
+          console.log(resultBig3);
+          // let resultTop3=p
+            var width = 500,
+              height = 500,
+              radius = Math.min(width, height) / 2;
+
+            var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+            var svg = d3.select('#section1')   // 이 부분이 변경되었습니다.
+              .append('svg')
+              .data([resultBig3])
+              .attr('width', width)
+              .attr('height', height)
+              .append('g')
+              .attr('transform', 'translate(' + radius + ',' + radius + ')');
+
+            var arc = d3.arc()
+              .outerRadius(radius - 10)
+              .innerRadius(0);
+
+            var pie = d3.pie()
+              .value(function (d) { return d.cnt; })
+              .sort(null);
+
+            var g = svg.selectAll('.arc')
+              .data(pie(resultBig3))
+              .enter().append('g')
+              .attr('class', 'arc');
+
+            g.append('path')
+              .attr('d', arc)
+              .style('fill', function (d) { return color(d.data.상권업종중분류명); });
+
+            g.append('text')
+              .attr('transform', function (d) { return 'translate(' + arc.centroid(d) + ')'; })
+              .attr('dy', '.35em')
+              .style('text-anchor', 'middle')
+              .text(function (d) { return d.data.상권업종중분류명 + ': ' + d.data.cnt; });  // 개수도 표시하도록 변경하였습니다.
+            
+              var summaryText = '현재 영역에서 제일 많은 업종은 ' + resultBig3.map(function (d) { return d.상권업종중분류명; }).join(', ') + '입니다';
+              d3.select('#summary').text(summaryText);  // 새로운 div에 요약 텍스트를 추가하였습니다.
+              alert("분석이 완료되었습니다.");
+          },  
+          
           error: function(xhr, status, error) {
             console.error('AJAX Error: ', status, error);
     }
             // var insideCircleCount = 0;
     
 
-            
+
             
 });
       }
