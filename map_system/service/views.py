@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
+from .CommonUtil import dictfetchall, CommonPage 
 
 
 def index(request):
@@ -17,13 +18,66 @@ from service.models import MyModel
 from service.forms import MyForm
 
 
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db import connection
+from django.http import JsonResponse, HttpResponse
+import json 
+
+#sql에서 받아오기
+def custom_sql_query(request):
+    # lat=request.GET.get("Ma")
+    # lon=request.GET.get("La")
+    # print(lon)
+    params = request.GET
+    
+# 특정 키의 값 가져오기
+    lat = params.get("Ma")
+    lon = params.get("La")
+    sql=f"""
+    select * from 
+    (
+    select  상권업종중분류명, count(*)  cnt 
+    from 
+    (
+        select A.*
+        from
+        (
+            SELECT 
+                    상권업종중분류명, 
+                    위도, 
+                    경도,
+                    (6371000 * ACOS(COS({lat}/57.29577951) * COS(TO_NUMBER(위도)/57.29577951) * COS(TO_NUMBER(경도)/57.29577951 - {lon}/57.29577951) + SIN({lat}/57.29577951) * SIN(TO_NUMBER(위도)/57.29577951))) as 거리
+            from MARKETFINAL0319
+        )A
+        where 거리<300
+    )A
+    group by A.상권업종중분류명
+    order by cnt desc
+    )
+    where rownum <=3
+    """
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql)
+        rows = dictfetchall(cursor)
+        jsonStr = json.dumps(rows, ensure_ascii=False).encode('utf8')
+        print(rows)
+    # # Fetch the column names from the cursor ""description
+    #     col_names = [desc[0] for desc in cursor.description]
+
+
+        return HttpResponse(jsonStr, content_type="application/json;charset=utf-8")
+
+
+
+
 
 # from service.forms import MyForm
 
 # html에서 받아온 사용자 값을 모델에 저장하기 (우리의 데이터)
 def save(request):
     data = request.POST.get('searchInput')
-     # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
+    # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
     # if data.is_valid():
         # result = form.sav/e(commit=True)  # 디비에 알아서 저장된다. Insert쿼리 자동생성ㅇ
     return HttpResponse(data)
