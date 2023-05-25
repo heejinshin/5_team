@@ -7,7 +7,7 @@ def index(request):
     return HttpResponse("<h1>Person</h1>")
 
 # def index(request):
-    # return render(request, 'service/choosebar.html')
+#     return render(request, 'service/choosebar.html')
 
 def show_map(request):
     return render(request, 'service/map.html')
@@ -65,17 +65,17 @@ def write(request):
 
 def generate_report(request):
     # 특정 영역의 경도, 위도 범위를 설정합니다.
-    min_longitude = 127.0
-    max_longitude = 128.0
-    min_latitude = 37.0
-    max_latitude = 38.0
+    min_longitude = 126.956
+    max_longitude = 127.007
+    min_latitude = 37.47
+    max_latitude = 37.51                              
 
     # 특정 영역 내에 있는 상권 정보를 조회합니다.
     model_result = MyModel.objects.filter(
-        longitude__gte=min_longitude,
-        longitude__lte=max_longitude,
-        latitude__gte=min_latitude,
-        latitude__lte=max_latitude
+        longitude__gte = min_longitude,
+        longitude__lte = max_longitude,
+        latitude__gte = min_latitude,
+        latitude__lte = max_latitude
     )
 
     # 조회된 상권 정보를 리포트로 보여줍니다.
