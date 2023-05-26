@@ -128,17 +128,19 @@ def write(request):
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from .models import CheckedValues
+from .models import UserInputModel
 
 @csrf_exempt
-def save_checked_values(request):
-    if request.method == "POST":
+def save_checked_values(request):  
+    # 요청 값을 받아서, 포스트로 받으면. 
+    # checkedvalues 리스트에 점포 유형이 들어온거에 대한 변수를 만들어서 
+    if request.method == "GET":
         checked_values = request.POST.getlist("checkedValues[]")
-
+        print(checked_values)
         # 선택된 checkbox의 카운트를 저장하는 로직
         # 예를 들어, CheckedValues 모델에 저장한다고 가정하면:
         for value in checked_values:
-            checked_value, created = CheckedValues.objects.get_or_create(value=value)
+            checked_value, created = UserInputModel.objects.get_or_create(value=value)
             checked_value.count += 1
             checked_value.save()
 

@@ -1,9 +1,16 @@
+{% load static %}
+
+
 <!DOCTYPE html>
+
 <html>
+
+
 
 <!-- id 기준: btnradio'n' < btn radio'nn' 단 n은 숫자 -->
 
 <head>
+  <script src="jquery-3.7.0.min.js"></script>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -292,6 +299,7 @@ li a:hover:not(.active) {
     </div>
   </div>
 </div>
+<<<<<<< Updated upstream
 <!-- 적용/분석 버튼 -->
 <div class="row justify-content-center">
   <div class="col-6">
@@ -303,6 +311,14 @@ li a:hover:not(.active) {
     </div>
     </div>
   </div>
+=======
+<div class="col" id="btnGroup4">
+  <input type="checkbox" class="btn-check"  autocomplete="off" id="apply">
+  <label class="btn btn-outline-primary" for="apply"><a href="#">적용</a>  
+  </label>
+  <input type="radio" class="btn-check"  autocomplete="off" id="">
+    <label class="btn btn-outline-primary" for="" id="analyze">분석</label>
+>>>>>>> Stashed changes
 </div>
 
 
@@ -479,8 +495,36 @@ li a:hover:not(.active) {
   });
         XBtn.addEventListener('click', () => {
           reportPage.style.display = 'none';
+<<<<<<< Updated upstream
   });         
 
+=======
+  });        
+  
+  // 점포 유형 선택시 해당 값 서버로 전달
+  $(document).ready(function() {
+  $("#apply").click(function() {
+    var checkedValues = [];
+    $(".btn-check:checked").each(function() {
+      checkedValues.push($(this).attr("id"));
+    });
+    console.log(checkedValues)
+    $.ajax({
+      url: "/service/save_checked_values/",  
+      type: "GET",  
+      data: {
+        checkedValues: checkedValues
+      },
+      success: function(response) {
+        console.log("선택된 카운트가 성공적으로 저장되었습니다.");
+      },
+      error: function(xhr, errmsg, err) {
+        console.log("카운트 저장 중 오류가 발생했습니다.");
+      }
+    });
+  });
+});
+>>>>>>> Stashed changes
   </script>
 
 
