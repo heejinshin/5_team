@@ -60,14 +60,14 @@ function goPage(pg)
 }
 
 //이 html문서가 모두 메모리에 로딩되면 이부분이 호출된다. 
-// $(document).ready( ()=>{
-//     $("#btnWrite").click(()=>{
-//       //화살표함수는 this사용못함 
-//       $("#myform").prop("action", "/board/write");
-//       $("#myform").prop("method", "post");
-//       $("#myform").submit();
-//     });
-// }) 
+$(document).ready( ()=>{
+    $("#btnWrite").click(()=>{
+      //화살표함수는 this사용못함 
+      $("#myform").prop("action", "/board/write");
+      $("#myform").prop("method", "post");
+      $("#myform").submit();
+    });
+}) 
 </script>
 
 
