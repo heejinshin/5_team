@@ -9,6 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
   
   <style>
     html,
@@ -37,19 +40,45 @@
       top: 107px;
       background-color: aliceblue;
       z-index: 1;
-      /* display: flex; */
-      /* justify-content:space-evenly; */
-      /* flex-wrap: wrap; */
+      border: 1px solid #000;
+      border-radius: 5px;
     }
     #btnGroup1 {
       width: 330px;
+      bottom: 30px;
+    }
+    #btnGroup2 {
+      left: 10px;
+      bottom: 110px;
+    }
+    #btnGroup4 {
+      position: absolute;
+      left: 100px;
+      top: 550px;     
+    }
+    #btnGroup11{
+      top: 20px;
+    }
+    #btnGroup12{
+      left: 12px;
+    }
+    #btnGroup13{
+      left: 10px;
+      bottom: 20px;
     }
     #board > .name {
+      font-size: 40px;
+      text-align: center;
+      font-family: 'Noto Sans KR', sans-serif;;
+      color: rgb(33, 25, 0);
       position: static;
-      width: 330px;
+      width: 329px;
       height: 56px;
-      /* left: 84px;
-      top: 107px; */
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      border-bottom: 1px solid #000;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
       background-color: lightpink;
       z-index: 1;
       justify-content:center;
@@ -57,10 +86,11 @@
     }
     #board > .box {
       position: sticky;
-      width: 330px;
+      width: 329px;
       height: 80px;
-      /* left: 84px;
-      top: 107px; */
+      border-bottom: 1px solid #000;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
       background-color: whitesmoke;
       z-index: 1;
       justify-content:center;
@@ -70,7 +100,6 @@
     }
 
     .row{
-      /* display: flex; */
       width: 330px;
     }
     .break {
@@ -148,7 +177,7 @@ li a:hover:not(.active) {
     border: 1px solid #ccc;
 }
   </style>
-<!-- https://www.w3schools.com/css/tryit.asp?filename=trycss_navbar_horizontal_black_right -->
+
 </head>
 
 
@@ -156,14 +185,14 @@ li a:hover:not(.active) {
 <ul>
   <li><a href="#home">이수시 상권분석서비스!</a></li>
   <li style="float:right"><a class="active" href="#about">로그인</a></li>
-  <li style="float:right"><a class="active" href="{% url 'board:write' %}">게시판</a></li>
 </ul>
   <div id="map"></div>
   <div id="board">
-    <div class="name">나는 사장</div>
+    <div class="name">나는 <strong>사장</strong></div>
     <div class="box">
+      <!-- 최상위 버튼 -->
       <div class="row">
-      <div class="col">
+      <div class="col d-flex justify-content-center">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
           <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
           <label class="btn btn-outline-primary" for="btnradio1">점포 위치</label>
@@ -177,14 +206,14 @@ li a:hover:not(.active) {
     </div>
   </div>
   
-    <div class="col">
+    <div class="col d-flex justify-content-center">
       <div id="searchContainer" style="display: none">
         <input type="text" id="searchInput">
         <button id="searchButton">검색</button>
       </div>
     </div>
     
-    <div class="col">
+    <div class="col d-flex justify-content-center">
     <div id="btnradio011"  style="display: none">
     <input type="radio" name="marker">
     <label for="btnradio011">
@@ -193,7 +222,7 @@ li a:hover:not(.active) {
     </div>
     </div>
 
-
+<!-- 중간 버튼 -->
 <div class="row">
   <div class="col">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup1"
@@ -209,46 +238,46 @@ li a:hover:not(.active) {
     </div>
   </div>
 </div>
-
+<!-- 세부 항목 버튼 -->
 <div class="row">
-  <div class="col">
-    <div class="btn-group mt-3" role="group" aria-label="Basic checkbox toggle button group" id="btnGroup11" style="display: none;">
-      <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+  <div class="col d-flex justify-content-center">
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="btnGroup11" style="display: none;">
+      <input type="radio" name="restRadio" class="btn-check" id="btncheck1" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck1">한식</label>
-      <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+      <input type="radio" name="restRadio" class="btn-check" id="btncheck2" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck2">중식</label>
-      <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
+      <input type="radio" name="restRadio"  class="btn-check" id="btncheck3" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck3">양식</label>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="col">
+  <div class="col d-flex justify-content-center">
     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="btnGroup12" style="display: none;">
-      <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-      <label class="btn btn-outline-primary btn-sm" for="btncheck4" name="">일반교습학원</label>
-      <input type="checkbox" class="btn-check" id="btncheck5" autocomplete="off">
+      <input type="radio" name="retailRadio" class="btn-check" id="btncheck4" autocomplete="off">
+      <label class="btn btn-outline-primary btn-sm" for="btncheck4">일반교습학원</label>
+      <input type="radio" name="retailRadio" class="btn-check" id="btncheck5" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck5">외국어학원</label>
-      <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off" width="">
+      <input type="radio" name="retailRadio" class="btn-check" id="btncheck6" autocomplete="off" width="">
       <label class="btn btn-outline-primary btn-sm" for="btncheck6">예술학원</label>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="col">
+  <div class="col d-flex justify-content-center">
     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="btnGroup13" style="display: none;">
-      <input type="checkbox" class="btn-check" id="btncheck7" autocomplete="off">
+      <input type="radio" name="serviceRadio" class="btn-check" id="btncheck7" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck7">슈퍼마켓</label>
-      <input type="checkbox" class="btn-check" id="btncheck8" autocomplete="off">
+      <input type="radio" name="serviceRadio" class="btn-check" id="btncheck8" autocomplete="off">
       <label class="btn btn-outline-primary btn-sm" for="btncheck8">편의점</label>
-      <input type="checkbox" class="btn-check" id="btncheck9" autocomplete="off" width="">
+      <input type="radio" name="serviceRadio" class="btn-check" id="btncheck9" autocomplete="off" width="">
       <label class="btn btn-outline-primary btn-sm" for="btncheck9">컴퓨터판매</label>
     </div>
   </div>
 </div>
-
+<!-- 그리기 버튼 -->
 <div class="row">
-  <div class="col">
+  <div class="col d-flex justify-content-center">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="btnGroup2"
       style="display: none">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio31" autocomplete="off">
@@ -262,17 +291,21 @@ li a:hover:not(.active) {
     </div>
   </div>
 </div>
-<div class="col" id="btnGroup4">
-  <input type="checkbox" class="btn-check"  autocomplete="off" id="apply">
-  <label class="btn btn-outline-primary" for="apply"><a href="{% url 'board:write' %}">적용</a>  
-  </label>
-  <input type="radio" class="btn-check"  autocomplete="off" id="">
-    <label class="btn btn-outline-primary" for="" id="analyze">분석</label>
+<!-- 적용/분석 버튼 -->
+<div class="row justify-content-center">
+  <div class="col-6">
+    <div class="btn-group d-flex justify-content-center" role="group" aria-label="Basic checkbox toggle button group" id="btnGroup4">
+      <input type="button" class="btn-check" autocomplete="off" id="apply">
+      <label class="btn btn-outline-primary" for="apply">적용</label>
+      <input type="button" class="btn-check" autocomplete="off" id="analyze">
+      <label class="btn btn-outline-primary" for="analyze">분석</label>
+    </div>
+    </div>
+  </div>
 </div>
+
+
 <!-- 여기부터 분석보고서 창 -->
-<!-- <aside> -->
-
-
 <div id="reportPage">
   <div class="bar">
       <nav class="navbar navbar-expand-sm bg-danger navbar-dark">
@@ -298,13 +331,13 @@ li a:hover:not(.active) {
           </div>
       </nav>
   </div>
+  <!-- 보고서 영역 -->
   <div id="section1" class="section">Section 1</div>
   <div id="section2" class="section">Section 2</div>
   <div id="section3" class="section">Section 3</div>
   <div id="section4" class="section">Section 4</div>
 
 </div>
-<!-- </aside> -->
 
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5d2da3173fefbd062f5018267987fe70"></script>
   <script>
@@ -317,10 +350,6 @@ li a:hover:not(.active) {
 
     // 지도를 생성한다
     var map = new kakao.maps.Map(mapContainer, mapOption);
-    // window.addEventListener("resize", function () {
-    //   map.relayout();
-    // });
-
 
   //radio 버튼 클릭시 좌표 생성
 
@@ -338,7 +367,6 @@ li a:hover:not(.active) {
       var message = 'Marker created at: ' + latLng1.getLat() + ', ' + latLng1.getLng();
       console.log(message);
       alert(message);
-      //latling: 튜플 좌표값
     }
   });
 
@@ -361,21 +389,7 @@ li a:hover:not(.active) {
       } else {
         alert("Please create a marker first by clicking on the map.");
       }}})
-    
-  
 
-
-    //   var messageCircle = 'circle created at: ' + latlng.getLat() + ', ' + latlng.getLng();
-    //   console.log(messageCircle);
-    //   alert(messageCircle);
-    // kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
-    //   if (document.getElementById('btnradio3').checked) {
-
-        
-    //     //latling: 튜플 좌표값
-    //   }
-    // });
-  
   //원 만들기
 
     //버튼
@@ -395,8 +409,6 @@ li a:hover:not(.active) {
       let btnGroup11 = document.getElementById('btnGroup11')  // 음식점
       let btnGroup12 = document.getElementById('btnGroup12')  // 학원
       let btnGroup13 = document.getElementById('btnGroup13')  // 소매업
-      //
-      // let dataTable = document.getElementById('dataTable');
 
       //점포 위치, 업종 선택, 분석영역 버튼
       btnradio1.addEventListener('click', function () {
@@ -407,18 +419,13 @@ li a:hover:not(.active) {
         btnGroup11.style.display = 'none';
         btnGroup12.style.display = 'none';
         btnGroup13.style.display = 'none';
-        // dataTable.style.display = 'none';
       });
 
       btnradio2.addEventListener('click', function () {
         searchContainer.style.display = 'none';
         btnradio011.style.display = 'none';
         btnGroup1.style.display = 'block';
-        // btnradio22.addEventListener('click', function () {
-        // btnGroup12.style.display = 'block';
-        // })
         btnGroup2.style.display = 'none';
-        // dataTable.style.display = 'none';
         btnGroup11.style.display = 'none';
         btnGroup12.style.display = 'none';
         btnGroup13.style.display = 'none';
@@ -429,7 +436,6 @@ li a:hover:not(.active) {
         btnradio011.style.display = 'none';
         btnGroup1.style.display = 'none';
         btnGroup2.style.display = 'block';
-        // dataTable.style.display = 'table';
         btnGroup11.style.display = 'none';
         btnGroup12.style.display = 'none';
         btnGroup13.style.display = 'none';
@@ -472,30 +478,11 @@ li a:hover:not(.active) {
   });
         XBtn.addEventListener('click', () => {
           reportPage.style.display = 'none';
-  });        
-  
-  // 점포 유형 선택시 해당 값 서버로 전달
-  $(document).ready(function() {
-  $("#apply").click(function() {
-    var checkedValues = [];
-    $(".btn-check:checked").each(function() {
-      checkedValues.push($(this).attr("id"));
-    });
-    $.ajax({
-      url: "/save_checked_values/",  
-      type: "POST",  
-      data: {
-        checkedValues: checkedValues
-      },
-      success: function(response) {
-        console.log("선택된 카운트가 성공적으로 저장되었습니다.");
-      },
-      error: function(xhr, errmsg, err) {
-        console.log("카운트 저장 중 오류가 발생했습니다.");
-      }
-    });
-  });
-});
+  });         
+
   </script>
+
+
 </body>
+
 </html>
