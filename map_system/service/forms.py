@@ -23,11 +23,11 @@ class MyForm(forms.ModelForm):
             "wdate":"wdate"
         }
 
-from service.models import UserInputModel
+from service.models import CheckedValues
 
 class UserInputForm(forms.ModelForm):
     class Meta:
-        model = UserInputModel
+        model = CheckedValues
         fields = ["store_location", "store_select", "store_area"]
         labels = {
             "store_location": "점포위치",

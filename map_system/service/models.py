@@ -11,11 +11,14 @@ class MyModel(models.Model):
 
 
 
-class UserInputModel(models.Model):
+class CheckedValues(models.Model):
     # 점포위치
     store_location = models.CharField(max_length=100)
     # 업종선택
     store_select = models.CharField(max_length=100)
     # 분석영역
     store_area = models.IntegerField()
+
+
+
 
