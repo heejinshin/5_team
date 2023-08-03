@@ -31,7 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "mathfilters",
+    "board.apps.BoardConfig",
     "service.apps.ServiceConfig",
+    "login.apps.LoginConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -83,7 +86,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.oracle",
         "NAME":"XE",
         "USER": "user03",
-        "PASSWORD":"1234",
+        "PASSWORD": "1234",
         "HOST": "127.0.0.1",
         "PORT": 1521
     }

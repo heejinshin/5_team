@@ -34,3 +34,19 @@ class UserInputForm(forms.ModelForm):
             "store_select": "업종선택",
             "store_area": "분석영역"
         }
+        
+from service.models import Signup
+
+
+class SignupForm(forms.ModelForm):
+    class Meta:
+        model = Signup
+        fields = ['nickname', 'userid', 'password', 'passwordcheck', 'email', 'phone']
+        labels = {
+            'nickname': '닉네임',
+            'userid': '아이디',
+            'password': '패스워드',
+            'passwordcheck': '패스워드 확인',
+            'email': '이메일',
+            'phone': '전화번호'
+        }

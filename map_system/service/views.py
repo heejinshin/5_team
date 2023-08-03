@@ -47,7 +47,7 @@ def custom_sql_query(request):
                     위도, 
                     경도,
                     (6371000 * ACOS(COS({lat}/57.29577951) * COS(TO_NUMBER(위도)/57.29577951) * COS(TO_NUMBER(경도)/57.29577951 - {lon}/57.29577951) + SIN({lat}/57.29577951) * SIN(TO_NUMBER(위도)/57.29577951))) as 거리
-            from MARKETFINAL0319
+            from MARKETFINAL0527
         )A
         where 거리<300
     )A
@@ -151,3 +151,21 @@ def user_input_view(request):
     else:
         form = UserInputForm()
     return render(request, 'index.html', {'form': form})
+
+
+from service.forms import SignupForm 
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()  # 데이터 저장
+            return redirect('success_page')
+    else:
+        form = SignupForm()
+    return render(request, 'service/signup.html', {'form': form})
+
+def login(request) :
+    if request.method == "POST" :
+        pass
+    else :
+        return render(request, "service/login.html")

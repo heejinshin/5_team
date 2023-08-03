@@ -39,7 +39,7 @@
     #board {
       position: absolute;
       width: 330px;
-      height: 400px;
+      height: 600px;
       left: 84px;
       top: 107px;
       background-color: aliceblue;
@@ -60,15 +60,14 @@
   
     #btnGroup4 {
       position: absolute;
-      left: 130px;
-      top: 350px;
+      left: 100px;
+      top: 550px;
     }
   
     #btnGroup11 {
-      left: 10px;
-      top: 5px;
+      top: 20px;
     }
-    
+  
     #btnGroup12 {
       left: 12px;
     }
@@ -180,13 +179,10 @@
       display: none;
       overflow: auto;
     }
-    h5 {
-      color: #FFFFFF;
-    }
+  
     #date {
       position: relative;
       top: 7px;
-      color: white;
     }
   
     .X {
@@ -195,13 +191,8 @@
   
     .section {
       height: 100vh;
-      background-color: aliceblue;
+      background-color: #ececec;
       border: 1px solid #ccc;
-    }
-    #summary {
-      position: relative;
-      left: 10px;
-      top: 5px;
     }
   </style>
 
@@ -211,10 +202,8 @@
 
 <body>
 <ul>
-  <li><a href="{% url 'service:map' %}"" >이수시 상권분석서비스!</a></li>
-  <li style="float:right"><a class="active" href="{% url 'board:list' %}">게시판</a></li>
-  <li style="float:right"><a class="active" href="{% url 'service:signup' %}">회원가입</a></li>
-  <li style="float:right"><a class="active" href="{% url 'service:login' %}">로그인</a></li>
+  <li><a href="#home">이수시 상권분석서비스!</a></li>
+  <li style="float:right"><a class="active" href="#about">로그인</a></li>
 </ul>
   <div id="map"></div>
   <div id="board">
@@ -323,6 +312,8 @@
   <div class="col-6">
     <div class="btn-group d-flex justify-content-center" role="group" aria-label="Basic checkbox toggle button group"
       id="btnGroup4">
+      <input type="button" class="btn-check" autocomplete="off" id="apply">
+      <label class="btn btn-outline-primary" for="apply">적용</label>
       <input type="button" class="btn-check" autocomplete="off" id="analyze">
       <label class="btn btn-outline-primary" for="analyze">분석</label>
     </div>
@@ -335,17 +326,17 @@
 
 <div id="reportPage">
   <div class="bar">
-      <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+      <nav class="navbar navbar-expand-sm bg-danger navbar-dark">
           <div class="container-fluid">
               <div>
                   <h5>분석결과</h5>
                   <span id="date"></span>
               </div>
-              <ul class="navbar-nav" >
-                  <li class="nav-item" id="saveBtn">
+              <ul class="navbar-nav">
+                  <li class="nav-item">
                       <a class="nav-link active" href="#">저장</a>
                   </li>
-                  <li class="nav-item" id="printBtn">
+                  <li class="nav-item">
                       <a class="nav-link active" href="#">인쇄</a>
                   </li>
                   <li class="nav-item">
@@ -441,12 +432,11 @@
           success: function(resultBig3) {
           console.log(resultBig3);
           // let resultTop3=p
-            var width = 700,
+            var width = 500,
               height = 500,
               radius = Math.min(width, height) / 2;
 
             var color = d3.scaleOrdinal(d3.schemeCategory10);
-            var newTranslateX = 90;
 
             var svg = d3.select('#section1')   // 이 부분이 변경되었습니다.
               .append('svg')
@@ -454,7 +444,7 @@
               .attr('width', width)
               .attr('height', height)
               .append('g')
-              .attr('transform', 'translate(' + (radius + newTranslateX) + ',' + radius + ')');
+              .attr('transform', 'translate(' + radius + ',' + radius + ')');
 
             var arc = d3.arc()
               .outerRadius(radius - 10)
@@ -471,22 +461,16 @@
 
             g.append('path')
               .attr('d', arc)
-              .style('fill', function (d) { return color(d.data.상권업종중분류명); })
-              .style('stroke', '#fff') // 테두리 선 추가
-              .style('stroke-width', '2px') // 테두리 선 두께 설정
-
+              .style('fill', function (d) { return color(d.data.상권업종중분류명); });
 
             g.append('text')
               .attr('transform', function (d) { return 'translate(' + arc.centroid(d) + ')'; })
               .attr('dy', '.35em')
               .style('text-anchor', 'middle')
-              .style('fill', '#fff') // 텍스트 색상 설정
-              .style('font-size', '25px') // 텍스트 크기 설정
-              .text(function (d) { return d.data.상권업종중분류명 + ': ' + d.data.cnt; })
+              .text(function (d) { return d.data.상권업종중분류명 + ': ' + d.data.cnt; });  // 개수도 표시하도록 변경하였습니다.
             
-              var summaryText = '현재 영역에서 제일 많은 업종은 ' + resultBig3.map(function (d) { return d.상권업종중분류명; }).join(', ') + '입니다.';
-              d3.select('#summary').text
-              (summaryText);
+              var summaryText = '현재 영역에서 제일 많은 업종은 ' + resultBig3.map(function (d) { return d.상권업종중분류명; }).join(', ') + '입니다';
+              d3.select('#summary').text(summaryText);  // 새로운 div에 요약 텍스트를 추가하였습니다.
               alert("분석이 완료되었습니다.");
           },  
           
@@ -541,28 +525,8 @@
     // });
   
   //원 만들기
-  //새로고침
-  //   $(document).ready(function() {
-  //   $('home').click(function() {
-  //     location.reload(); // 현재 페이지를 새로고침합니다.
-  //   });
-  // });
 
-//   $(map).ready(function() {
-//   $('#home').click(function(event) {
-//     event.preventDefault(); // 링크의 기본 동작을 중지합니다.
-//     location.reload(); // 현재 페이지를 새로 고칩니다.
-//   });
-// });
-    // document.getElementById('home').addEventListener('click', function() {
-    //   location.reload();
-    //   console.log('전송 성공')
-    // }
     //버튼
-        document.getElementById('printBtn').addEventListener('click', function() {
-        window.print(); // 인쇄 창 열기
-        
-      });
       let btnradio1 = document.getElementById('btnradio1');
       let btnradio2 = document.getElementById('btnradio2');
       let btnradio3 = document.getElementById('btnradio3');
