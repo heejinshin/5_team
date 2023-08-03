@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
+from .CommonUtil import dictfetchall, CommonPage 
 
 
 def index(request):
     return HttpResponse("<h1>Person</h1>")
 
 # def index(request):
-#     return render(request, 'service/choosebar.html')
+    # return render(request, 'service/choosebar.html')
 
 def show_map(request):
     return render(request, 'service/map.html')
@@ -17,13 +18,66 @@ from service.models import MyModel
 from service.forms import MyForm
 
 
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db import connection
+from django.http import JsonResponse, HttpResponse
+import json 
+
+#sql에서 받아오기
+def custom_sql_query(request):
+    # lat=request.GET.get("Ma")
+    # lon=request.GET.get("La")
+    # print(lon)
+    params = request.GET
+    
+# 특정 키의 값 가져오기
+    lat = params.get("Ma")
+    lon = params.get("La")
+    sql=f"""
+    select * from 
+    (
+    select  상권업종중분류명, count(*)  cnt 
+    from 
+    (
+        select A.*
+        from
+        (
+            SELECT 
+                    상권업종중분류명, 
+                    위도, 
+                    경도,
+                    (6371000 * ACOS(COS({lat}/57.29577951) * COS(TO_NUMBER(위도)/57.29577951) * COS(TO_NUMBER(경도)/57.29577951 - {lon}/57.29577951) + SIN({lat}/57.29577951) * SIN(TO_NUMBER(위도)/57.29577951))) as 거리
+            from MARKETFINAL0527
+        )A
+        where 거리<300
+    )A
+    group by A.상권업종중분류명
+    order by cnt desc
+    )
+    where rownum <=3
+    """
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql)
+        rows = dictfetchall(cursor)
+        jsonStr = json.dumps(rows, ensure_ascii=False).encode('utf8')
+        print(rows)
+    # # Fetch the column names from the cursor ""description
+    #     col_names = [desc[0] for desc in cursor.description]
+
+
+        return HttpResponse(jsonStr, content_type="application/json;charset=utf-8")
+
+
+
+
 
 # from service.forms import MyForm
 
 # html에서 받아온 사용자 값을 모델에 저장하기 (우리의 데이터)
 def save(request):
     data = request.POST.get('searchInput')
-     # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
+    # form 객체 다 들고옴 ; 클라이언트로 부터 전달된 데이터인 form 객체를 생성 
     # if data.is_valid():
         # result = form.sav/e(commit=True)  # 디비에 알아서 저장된다. Insert쿼리 자동생성ㅇ
     return HttpResponse(data)
@@ -49,39 +103,33 @@ def save_data_to_model(request):
     # return redirect(form_object)
 
 
-from django.http import HttpResponse
-
 def write(request):
     if request.method == "POST":
-        form = UserInputForm(request.POST)
+        form = MyForm(request.POST)
         if form.is_valid():
-            board = form.save(commit=False)
-            if request.POST.get("btnradio") == "외식업":
-                board.category = "외식업"
-            elif request.POST.get("btnradio") == "소매업":
-                board.category = "소매업"
-            board.save()
-
-            return HttpResponse("글이 성공적으로 저장되었습니다.")
+            # 폼이 유효한 경우, 필요한 처리를 수행
+            # ...
+            return redirect("index")  # 처리가 완료된 후에는 다시 index로 이동
     else:
-        form = UserInputForm()
+        form = MyForm()
 
-    context = {"form": form}
-    return render(request, "board/board_write.html", context)
+    context = {"form": MyForm(request.POST)}
+    return render(request, "service/index.html", context)
+
 
 def generate_report(request):
     # 특정 영역의 경도, 위도 범위를 설정합니다.
-    min_longitude = 126.956
-    max_longitude = 127.007
-    min_latitude = 37.47
-    max_latitude = 37.51                              
+    min_longitude = 127.0
+    max_longitude = 128.0
+    min_latitude = 37.0
+    max_latitude = 38.0
 
     # 특정 영역 내에 있는 상권 정보를 조회합니다.
     model_result = MyModel.objects.filter(
-        longitude__gte = min_longitude,
-        longitude__lte = max_longitude,
-        latitude__gte = min_latitude,
-        latitude__lte = max_latitude
+        longitude__gte=min_longitude,
+        longitude__lte=max_longitude,
+        latitude__gte=min_latitude,
+        latitude__lte=max_latitude
     )
 
     # 조회된 상권 정보를 리포트로 보여줍니다.
@@ -105,45 +153,19 @@ def user_input_view(request):
     return render(request, 'index.html', {'form': form})
 
 
-from django.http import HttpResponse
-
-def write(request):
-    if request.method == "POST":
-        form = UserInputForm(request.POST)
+from service.forms import SignupForm 
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
         if form.is_valid():
-            board = form.save(commit=False)
-            if request.POST.get("btnradio") == "외식업":
-                board.category = "외식업"
-            elif request.POST.get("btnradio") == "소매업":
-                board.category = "소매업"
-            board.save()
-
-            return HttpResponse("글이 성공적으로 저장되었습니다.")
+            form.save()  # 데이터 저장
+            return redirect('success_page')
     else:
-        form = UserInputForm()
+        form = SignupForm()
+    return render(request, 'service/signup.html', {'form': form})
 
-    context = {"form": form}
-    return render(request, "board/board_write.html", context)
-
-
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from .models import UserInputModel
-
-@csrf_exempt
-def save_checked_values(request):  
-    # 요청 값을 받아서, 포스트로 받으면. 
-    # checkedvalues 리스트에 점포 유형이 들어온거에 대한 변수를 만들어서 
-    if request.method == "GET":
-        checked_values = request.POST.getlist("checkedValues[]")
-        print(checked_values)
-        # 선택된 checkbox의 카운트를 저장하는 로직
-        # 예를 들어, CheckedValues 모델에 저장한다고 가정하면:
-        for value in checked_values:
-            checked_value, created = UserInputModel.objects.get_or_create(value=value)
-            checked_value.count += 1
-            checked_value.save()
-
-        return JsonResponse({"message": "선택된 카운트가 저장되었습니다."})
-
-    return JsonResponse({"message": "잘못된 요청입니다."})
+def login(request) :
+    if request.method == "POST" :
+        pass
+    else :
+        return render(request, "service/login.html")

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "mathfilters",
     "board.apps.BoardConfig",
     "service.apps.ServiceConfig",
+    "login.apps.LoginConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -59,7 +60,6 @@ import os
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        
         "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -71,10 +71,6 @@ TEMPLATES = [
             ],
         },
     },
-]
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
@@ -89,8 +85,8 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         "ENGINE": "django.db.backends.oracle",
         "NAME":"XE",
-        "USER": "user02",
-        "PASSWORD":"1234",
+        "USER": "user03",
+        "PASSWORD": "1234",
         "HOST": "127.0.0.1",
         "PORT": 1521
     }
@@ -119,9 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "ko-kr"
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "Asia/Seoul"
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -132,9 +128,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static')
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
- 

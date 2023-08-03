@@ -5,9 +5,10 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.shortcuts import redirect 
 from django.db import connection 
-from common.CommonUtil import dictfetchall, CommonPage
+from service.CommonUtil import dictfetchall, CommonPage
 from django.http import JsonResponse  
 import json 
+from .models import Board
 
 def list(request):
     boardList = Board.objects.all()
@@ -53,24 +54,51 @@ def write(request):
         if form.is_valid():
             board = form.save(commit=False) 
             board.save()  
-            return HttpResponse("글이 성공적으로 저장되었습니다.")
+            return JsonResponse({"message": "글이 성공적으로 저장되었습니다."}, status=200)
+        else:
+            return JsonResponse({"message": "글 저장에 실패했습니다. 다시 시도해주세요."}, status=400)
+
     else:
         form = BoardForm()
 
     context = {"form": form}
     return render(request, "board/board_write.html", context)
-from .models import Board
 
+# def write(request):
+#     if request.method == "POST":
+#         form = BoardForm(request.POST)
+#         if form.is_valid():
+#             board = form.save(commit=False) 
+#             board.save()  
+#             return HttpResponse("글이 성공적으로 저장되었습니다.")
+#     else:
+#         form = BoardForm()
+
+#     context = {"form": form}
+#     return render(request, "board/board_write.html", context)
 
 
 
 def save(request):
-    form = BoardForm(request.POST)
-    board = form.save(commit=False) 
-    board.wdate =  timezone.now()  #현재 시간 저장
-    board.hit=0
-    board.save()
-    return redirect("board:list", pg=0)
+    if request.method == "POST":
+        form = BoardForm(request.POST)
+        if form.is_valid():
+            board = form.save(commit=False) 
+            board.wdate = timezone.now()
+            board.hit = 0
+            board.save()
+            return JsonResponse({"message": "글이 성공적으로 저장되었습니다."}, status=200)
+        else:
+            return JsonResponse({"message": "글 저장에 실패했습니다. 다시 시도해주세요."}, status=400)
+    return JsonResponse({"message": "잘못된 요청입니다."}, status=400)
+
+# def save(request):
+#     form = BoardForm(request.POST)
+#     board = form.save(commit=False) 
+#     board.wdate =  timezone.now()  #현재 시간 저장
+#     board.hit=0
+#     board.save()
+#     return redirect("board:list", pg=0)
 
 
 
@@ -96,7 +124,7 @@ def write_datas(request, category):
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-# from .models import CheckedV
+# from .models import CheckedValues
 
 # 점포 유형 카운트 세는 로직 
 @csrf_exempt
